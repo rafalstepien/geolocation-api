@@ -2,7 +2,7 @@ from fastapi import FastAPI, Response, status
 
 from config_loader.config_loader import config
 from database.database_client import DatabaseClient
-from ipstack.ipstack_client import IpstackClient
+from ipstack_client.ipstack_client import IpstackClient
 
 app = FastAPI()
 ipstack_client = IpstackClient()

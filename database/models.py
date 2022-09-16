@@ -1,16 +1,7 @@
-from sqlalchemy import Column, Float, ForeignKey, Integer, String, create_engine
+from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
 
-from config_loader.config_loader import config
-
 Base = declarative_base()
-engine = create_engine(
-    f"postgresql://"
-    f"{config.HEROKU_POSTGRES_USER}:"
-    f"{config.HEROKU_POSTGRES_PASSWORD}@"
-    f"{config.HEROKU_POSTGRES_HOST}/"
-    f"{config.HEROKU_POSTGRES_DATABASE}"
-)
 
 
 class LocationData(Base):
@@ -45,6 +36,3 @@ class GeneralInformationData(Base):
 
     def __repr__(self):
         return f"<GeneralInformationData({self.ip_address})>"
-
-
-Base.metadata.create_all(engine)

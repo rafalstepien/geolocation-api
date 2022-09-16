@@ -1,7 +1,7 @@
 from typing import Tuple
 
 from database.models import GeneralInformationData, LocationData
-from ipstack.models import IpstackStandardLookupResponseModel
+from ipstack_client.models import IpstackStandardLookupResponseModel
 
 
 class IpstackToPostgresDataConverter:
@@ -10,7 +10,7 @@ class IpstackToPostgresDataConverter:
         ipstack_response_data: IpstackStandardLookupResponseModel,
     ) -> Tuple[GeneralInformationData, LocationData]:
         """
-        Convert data returned from ipstack.com to the format that is acceptable by database.
+        Convert data returned from ipstack_client.com to the format that is acceptable by database.
 
         Args:
             ipstack_response_data: Data returned by Ipstack API.
