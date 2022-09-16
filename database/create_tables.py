@@ -1,7 +1,7 @@
-from database.models import Base
-from config_loader.config_loader import config
 from sqlalchemy import create_engine
 
+from config_loader.config_loader import config
+from database.models import Base
 
 engine = create_engine(
     f"postgresql://"

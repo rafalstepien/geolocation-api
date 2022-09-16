@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
 
-
 Base = declarative_base()
 
 

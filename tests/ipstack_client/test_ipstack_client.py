@@ -1,5 +1,3 @@
-
-
 def test_get_data_for_ip_address_parses_data_correctly():
     pass
 

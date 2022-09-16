@@ -1,14 +1,13 @@
 import pytest
+
 from database.database_client import DatabaseClient
-from tests.utils import load_test_json_data
 from ipstack_client.models import IpstackStandardLookupResponseModel
+from tests.utils import load_test_json_data
 
 
 @pytest.fixture
 def create_engine_mock(mocker):
-    return mocker.patch(
-        "database.database_client.create_engine"
-    )
+    return mocker.patch("database.database_client.create_engine")
 
 
 @pytest.fixture

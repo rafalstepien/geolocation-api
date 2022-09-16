@@ -1,12 +1,12 @@
 from typing import Iterable
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import Session
 
 from database.converters import IpstackToPostgresDataConverter
-from ipstack_client.models import IpstackStandardLookupResponseModel
 from error_handler.error_handler import handle_errors
+from ipstack_client.models import IpstackStandardLookupResponseModel
 
 
 class DatabaseClient:

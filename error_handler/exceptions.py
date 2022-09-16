@@ -5,6 +5,7 @@ class BaseGeolocationAPIError(Exception):
     """
     Base class to inherit from for all errors.
     """
+
     status_code: int = status.HTTP_400_BAD_REQUEST
     message: str = "An error occurred."
 
@@ -27,6 +28,7 @@ class IpstackAPIValueError(BaseGeolocationAPIError):
     """
     Raised when Ipstack API returns 'None' for mandatory field.
     """
+
     status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     ...
 
@@ -35,6 +37,9 @@ class InvalidDatabaseCredentialsError(BaseGeolocationAPIError):
     """
     Raised when credentials for connecting to database are invalid.
     """
+
     status_code = status.HTTP_401_UNAUTHORIZED
-    message = "Something went wrong with connection credentials. Please check " \
-              "if host, database name, user and password are correct."
+    message = (
+        "Something went wrong with connection credentials. Please check "
+        "if host, database name, user and password are correct."
+    )
