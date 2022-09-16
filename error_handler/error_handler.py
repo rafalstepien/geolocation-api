@@ -3,7 +3,8 @@ from contextlib import contextmanager
 from pydantic.error_wrappers import ValidationError
 from sqlalchemy.exc import OperationalError
 
-from error_handler.exceptions import InvalidDatabaseCredentialsError, IpstackAPIValueError
+from error_handler.exceptions import InvalidDatabaseCredentialsError, IpstackAPIValueError, IpstackError
+from error_handler.models import IpstackErrorResponseModel
 
 
 class ErrorHandler:
@@ -32,6 +33,7 @@ class ErrorHandler:
             error: ValidationError object
         """
         errors = []
+
         for error_data in error.errors():
             field = error_data.get("loc")[0]
             message = f"Ipstack API returned incorrect value in the following field: {field}"
@@ -42,6 +44,11 @@ class ErrorHandler:
     @staticmethod
     def _handle_sqlalchemy_error(error: OperationalError):
         raise InvalidDatabaseCredentialsError()
+
+    @staticmethod
+    def handle_ipstack_error_response(response_as_dictionary: dict):
+        ipstack_error = IpstackErrorResponseModel(**response_as_dictionary)
+        raise IpstackError(status_code=ipstack_error.error.code, message=ipstack_error.error.info)
 
 
 @contextmanager

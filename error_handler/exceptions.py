@@ -43,3 +43,7 @@ class InvalidDatabaseCredentialsError(BaseGeolocationAPIError):
         "Something went wrong with connection credentials. Please check "
         "if host, database name, user and password are correct."
     )
+
+
+class IpstackError(BaseGeolocationAPIError):
+    ...

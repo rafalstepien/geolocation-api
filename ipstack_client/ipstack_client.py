@@ -4,7 +4,7 @@ import requests
 from pydantic.error_wrappers import ValidationError
 
 from config_loader.config_loader import config
-from error_handler.error_handler import handle_errors
+from error_handler.error_handler import ErrorHandler, handle_errors
 from ipstack_client.constants import IPSTACK_BASE_URL
 from ipstack_client.models import IpstackStandardLookupResponseModel
 
@@ -17,5 +17,16 @@ class IpstackClient:
     @staticmethod
     def _parse_upstream_response(response: requests.Response) -> IpstackStandardLookupResponseModel:
         response_as_dictionary = json.loads(response.content.decode("utf-8"))
-        with handle_errors(ValidationError):
-            return IpstackStandardLookupResponseModel(**response_as_dictionary)
+
+        if IpstackClient._is_success_response(response_as_dictionary):
+            with handle_errors(ValidationError):
+                return IpstackStandardLookupResponseModel(**response_as_dictionary)
+
+        else:
+            ErrorHandler().handle_ipstack_error_response(response_as_dictionary)
+
+    @staticmethod
+    def _is_success_response(response: dict) -> bool:
+        if response.get("success") is not None:
+            return response.get("success")
+        return True

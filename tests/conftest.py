@@ -1,8 +1,16 @@
+import json
+from unittest.mock import Mock
+
 import pytest
 
 from database.database_client import DatabaseClient
 from ipstack_client.models import IpstackStandardLookupResponseModel
 from tests.utils import load_test_json_data
+
+
+@pytest.fixture
+def ip_address():
+    return "123.45.67.8.9"
 
 
 @pytest.fixture
@@ -22,10 +30,26 @@ def test_database_client():
 
 
 @pytest.fixture
-def test_ipstack_response_data():
+def ipstack_response_data():
     return load_test_json_data("ipstack_response.json")
 
 
 @pytest.fixture
-def test_ipstack_response_object(test_ipstack_response_data):
-    return IpstackStandardLookupResponseModel(**test_ipstack_response_data)
+def ipstack_response_object(ipstack_response_data):
+    return IpstackStandardLookupResponseModel(**ipstack_response_data)
+
+
+@pytest.fixture
+def raw_ipstack_response(ipstack_response_data):
+    return Mock(content=json.dumps(ipstack_response_data).encode("utf-8"))
+
+
+@pytest.fixture
+def raw_ipstack_response_with_empty_ip(ipstack_response_data):
+    ipstack_response_data["ip"] = None
+    return Mock(content=json.dumps(ipstack_response_data).encode("utf-8"))
+
+
+@pytest.fixture
+def ipstack_error_response_data():
+    return Mock(content=json.dumps(load_test_json_data("ipstack_error_response.json")).encode("utf-8"))
