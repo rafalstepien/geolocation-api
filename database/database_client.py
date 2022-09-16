@@ -2,9 +2,11 @@ from typing import Iterable
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import OperationalError
 
 from database.converters import IpstackToPostgresDataConverter
 from ipstack_client.models import IpstackStandardLookupResponseModel
+from error_handler.error_handler import handle_errors
 
 
 class DatabaseClient:
@@ -29,7 +31,8 @@ class DatabaseClient:
         pass
 
     def _session_insert_handler(self, elements_to_add_to_session: Iterable) -> None:
-        with Session(self.engine) as session:
-            for element in elements_to_add_to_session:
-                session.add(element)
-            session.commit()
+        with handle_errors(OperationalError):
+            with Session(self.engine) as session:
+                for element in elements_to_add_to_session:
+                    session.add(element)
+                session.commit()

@@ -2,7 +2,8 @@ from contextlib import contextmanager
 
 from pydantic.error_wrappers import ValidationError
 
-from error_handler.exceptions import IpstackAPIValueError
+from error_handler.exceptions import IpstackAPIValueError, InvalidDatabaseCredentialsError
+from sqlalchemy.exc import OperationalError
 
 
 class ErrorHandler:
@@ -19,6 +20,8 @@ class ErrorHandler:
         """
         if isinstance(error, ValidationError):
             self._handle_validation_error(error)
+        elif isinstance(error, OperationalError):
+            self._handle_sqlalchemy_error(error)
 
     @staticmethod
     def _handle_validation_error(error: ValidationError) -> None:
@@ -35,6 +38,10 @@ class ErrorHandler:
             errors.append(IpstackAPIValueError(message=message))
 
         raise errors[0]
+
+    @staticmethod
+    def _handle_sqlalchemy_error(error: OperationalError):
+        raise InvalidDatabaseCredentialsError()
 
 
 @contextmanager
