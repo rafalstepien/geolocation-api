@@ -3,8 +3,8 @@ from typing import Iterable
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from database.converters import IpstackToPostgresDataConverter
-from ipstack.models import IpstackStandardLookupResponseModel
+from database_client.converters import IpstackToPostgresDataConverter
+from ipstack_client.models import IpstackStandardLookupResponseModel
 
 
 class DatabaseClient:

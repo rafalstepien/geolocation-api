@@ -5,8 +5,8 @@ from pydantic.error_wrappers import ValidationError
 
 from config_loader.config_loader import config
 from error_handler.error_handler import handle_errors
-from ipstack.constants import IPSTACK_BASE_URL
-from ipstack.models import IpstackStandardLookupResponseModel
+from ipstack_client.constants import IPSTACK_BASE_URL
+from ipstack_client.models import IpstackStandardLookupResponseModel
 
 
 class IpstackClient:
