@@ -5,7 +5,11 @@ from config_loader.config_loader import config
 
 Base = declarative_base()
 engine = create_engine(
-    f"postgresql://{config.HEROKU_POSTGRES_USER}:{config.HEROKU_POSTGRES_PASSWORD}@{config.HEROKU_POSTGRES_HOST}/{config.HEROKU_POSTGRES_DATABASE}"
+    f"postgresql://"
+    f"{config.HEROKU_POSTGRES_USER}:"
+    f"{config.HEROKU_POSTGRES_PASSWORD}@"
+    f"{config.HEROKU_POSTGRES_HOST}/"
+    f"{config.HEROKU_POSTGRES_DATABASE}"
 )
 
 
@@ -18,8 +22,7 @@ class LocationData(Base):
     capital = Column(String)
     calling_code = Column(String)
 
-    general_information_id = Column(Integer, ForeignKey("geolocation_data.id"))
-    general_information = relationship("GeneralInformationData", back_populates="location_data")
+    geolocation_data_id = Column(Integer, ForeignKey("geolocation_data.id"))
 
     def __repr__(self):
         return f"<LocationData({self.geoname_id})>"
@@ -35,10 +38,10 @@ class GeneralInformationData(Base):
     region_code = Column(String)
     city = Column(String)
     zip = Column(String)
-    lattitude = Column(Float)
+    latitude = Column(Float)
     longitude = Column(Float)
 
-    location = relationship("LocationData", back_populates="geolocation_data")
+    location_data = relationship("LocationData", uselist=False, backref="geolocation_data")
 
     def __repr__(self):
         return f"<GeneralInformationData({self.ip_address})>"

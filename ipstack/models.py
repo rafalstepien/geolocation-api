@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -15,7 +15,7 @@ class Language(Model):
 
 
 class Location(Model):
-    geoname_id: int
+    geoname_id: Optional[int] = -1
     capital: str
     languages: List[Language]
     calling_code: str
@@ -24,13 +24,13 @@ class Location(Model):
 
 class IpstackStandardLookupResponseModel(Model):
     ip: str
-    type: str
-    country_code: str
-    country_name: str
-    region_code: str
-    region_name: str
-    city: str
-    zip: str
+    type: Optional[str] = ""
+    country_code: Optional[str] = ""
+    country_name: Optional[str] = ""
+    region_code: Optional[str] = ""
+    region_name: Optional[str] = ""
+    city: Optional[str] = ""
+    zip: Optional[str] = ""
     latitude: float
     longitude: float
     location: Location
