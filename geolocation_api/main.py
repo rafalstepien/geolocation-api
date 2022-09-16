@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response, status
 
 from config_loader.config_loader import config
-from database_client.database_client import DatabaseClient
+from database.database_client import DatabaseClient
 from ipstack_client.ipstack_client import IpstackClient
 
 app = FastAPI()
