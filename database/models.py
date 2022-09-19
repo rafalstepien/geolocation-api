@@ -4,6 +4,14 @@ from sqlalchemy.orm import declarative_base, relationship
 Base = declarative_base()
 
 
+class Users(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    password_hash = Column(String)
+
+
 class LocationData(Base):
     __tablename__ = "location_data"
 
