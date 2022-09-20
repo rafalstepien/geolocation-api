@@ -5,10 +5,10 @@ from fastapi.security import APIKeyHeader
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from config_loader.config_loader import config
-from database.models import Users
-from error_handler.exceptions import IncorrectPasswordError, UserNotFoundError
-from geolocation_api.models import JWTData
+from database.models import UserInformation
+from geolocation_api.config_loader.config_loader import config
+from geolocation_api.error_handler.exceptions import IncorrectPasswordError, UserNotFoundError
+from geolocation_api.security import JWTData
 
 api_key_scheme = APIKeyHeader(name="Authorization")
 JWT_ALGORITHM = "HS256"
@@ -61,13 +61,13 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def authenticate_user(user: Users, password: str) -> Users:
+def authenticate_user(user: UserInformation, password: str) -> UserInformation:
     """
     Check if the user exists and if the passed password matches the one from database.
     If everything is right, then return this user.
 
     Args:
-        user: Users object from the database.
+        user: User object from the database.
         password: Password passed by client when requesting the token.
 
     Returns:

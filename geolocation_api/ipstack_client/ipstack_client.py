@@ -3,10 +3,10 @@ import json
 import requests
 from pydantic.error_wrappers import ValidationError
 
-from config_loader.config_loader import config
-from error_handler.error_handler import ErrorHandler, handle_errors
-from ipstack_client.constants import IPSTACK_BASE_URL
-from ipstack_client.models import IpstackStandardLookupResponseModel
+from geolocation_api.config_loader.config_loader import config
+from geolocation_api.error_handler.error_handler import ErrorHandler, handle_errors
+from geolocation_api.ipstack_client.constants import IPSTACK_BASE_URL
+from geolocation_api.ipstack_client.models import IpstackStandardLookupResponseModel
 
 
 class IpstackClient:

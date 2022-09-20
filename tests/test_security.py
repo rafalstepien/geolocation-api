@@ -3,9 +3,9 @@ from unittest.mock import Mock
 import pytest
 from fastapi.exceptions import HTTPException
 
-from error_handler.exceptions import IncorrectPasswordError, UserNotFoundError
-from geolocation_api.models import JWTData
+from geolocation_api.error_handler.exceptions import IncorrectPasswordError, UserNotFoundError
 from geolocation_api.security import (
+    JWTData,
     authenticate_user,
     decode_jwt_authorization_header,
     encode_jwt_token,

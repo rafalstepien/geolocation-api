@@ -4,31 +4,26 @@ from sqlalchemy.orm import declarative_base, relationship
 Base = declarative_base()
 
 
-class Users(Base):
-    __tablename__ = "users"
+class Language(Base):
+    __tablename__ = "language"
+
+    id = Column(Integer, primary_key=True)
+
+    code = Column(String)
+    name = Column(String)
+    native = Column(String)
+
+
+class UserInformation(Base):
+    __tablename__ = "user_information"
 
     id = Column(Integer, primary_key=True)
     username = Column(String)
     password_hash = Column(String)
 
 
-class LocationData(Base):
-    __tablename__ = "location_data"
-
-    id = Column(Integer, primary_key=True)
-
-    geoname_id = Column(Integer)
-    capital = Column(String)
-    calling_code = Column(String)
-
-    geolocation_data_id = Column(Integer, ForeignKey("geolocation_data.id"))
-
-    def __repr__(self):
-        return f"<LocationData({self.geoname_id})>"
-
-
-class GeneralInformationData(Base):
-    __tablename__ = "geolocation_data"
+class GeneralInformation(Base):
+    __tablename__ = "general_information"
 
     id = Column(Integer, primary_key=True)
     ip_address = Column(String)
@@ -40,7 +35,22 @@ class GeneralInformationData(Base):
     latitude = Column(Float)
     longitude = Column(Float)
 
-    location_data = relationship("LocationData", uselist=False, backref="geolocation_data")
+    location_information = relationship("LocationInformation", uselist=False, backref="location_information")
 
     def __repr__(self):
         return f"<GeneralInformationData({self.ip_address})>"
+
+
+class LocationInformation(Base):
+    __tablename__ = "location_information"
+
+    id = Column(Integer, primary_key=True)
+
+    geoname_id = Column(Integer)
+    capital = Column(String)
+    calling_code = Column(String)
+
+    geolocation_data_id = Column(Integer, ForeignKey(GeneralInformation.id))
+
+    def __repr__(self):
+        return f"<LocationInformation({self.geoname_id})>"
