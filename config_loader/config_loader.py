@@ -12,6 +12,8 @@ class ConfigLoader(BaseSettings):
 
     IPSTACK_ACCESS_KEY: str = ""
 
+    JWT_SECRET_KEY: str = ""
+
     class Config:
         env_file = os.environ.get("ENV_FILE")
 

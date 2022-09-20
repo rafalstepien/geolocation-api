@@ -47,3 +47,13 @@ class InvalidDatabaseCredentialsError(BaseGeolocationAPIError):
 
 class IpstackError(BaseGeolocationAPIError):
     ...
+
+
+class UserNotFoundError(BaseGeolocationAPIError):
+    status_code = status.HTTP_401_UNAUTHORIZED
+    message = "Username is incorrect."
+
+
+class IncorrectPasswordError(BaseGeolocationAPIError):
+    status_code = status.HTTP_401_UNAUTHORIZED
+    message = "Provided password is incorrect."
