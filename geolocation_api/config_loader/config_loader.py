@@ -13,6 +13,8 @@ class ConfigLoader(BaseSettings):
     IPSTACK_ACCESS_KEY: str = ""
 
     JWT_SECRET_KEY: str = ""
+    TEST_USER_USERNAME: str = ""
+    TEST_USER_PASSWORD: str = ""
 
     TEST_USER_USERNAME: str = ""
     TEST_USER_PASSWORD: str = ""

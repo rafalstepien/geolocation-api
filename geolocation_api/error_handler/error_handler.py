@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from json import JSONDecodeError
 
 from pydantic.error_wrappers import ValidationError
 from sqlalchemy.exc import OperationalError
@@ -23,6 +24,8 @@ class ErrorHandler:
             self._handle_validation_error(error)
         elif isinstance(error, OperationalError):
             self._handle_sqlalchemy_error(error)
+        elif isinstance(error, JSONDecodeError):
+            self._handle_json_decode_error(error)
 
     @staticmethod
     def _handle_validation_error(error: ValidationError) -> None:
@@ -49,6 +52,11 @@ class ErrorHandler:
     def handle_ipstack_error_response(response_as_dictionary: dict):
         ipstack_error = IpstackErrorResponseModel(**response_as_dictionary)
         raise IpstackError(status_code=ipstack_error.error.code, message=ipstack_error.error.info)
+
+    def _handle_json_decode_error(self, error: JSONDecodeError):
+        raise IpstackError(
+            message="There was a problem with decoding Ipstack API response. Please check the response content."
+        )
 
 
 @contextmanager
