@@ -5,7 +5,7 @@ import pytest
 from passlib.context import CryptContext
 
 from database.database_client import DatabaseClient
-from geolocation_api.ipstack_client.models import IpstackStandardLookupResponseModel
+from geolocation_api.ipstack_client.models import IpstackGeneralInformationModel
 from tests.utils import load_test_json_data
 
 
@@ -13,7 +13,8 @@ from tests.utils import load_test_json_data
 def test_env(monkeypatch):
     monkeypatch.setattr("geolocation_api.config_loader.config_loader.config.JWT_SECRET_KEY", "secret")
     monkeypatch.setattr(
-        "geolocation_api.security.security.pwd_context", CryptContext(schemes=["bcrypt"], deprecated="auto")
+        "geolocation_api.security.security.SecurityHandler.pwd_context",
+        CryptContext(schemes=["bcrypt"], deprecated="auto"),
     )
 
 
@@ -34,8 +35,8 @@ def test_jwt_token_payload():
 def test_auth_header():
     return (
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
-        "eyJ1c2VybmFtZSI6InRlc3RfdXNlcm5hbWUiLCJleHAiOjE2NDA5OTg4MDB9."
-        "G8Jqx1fbQ5pKynJSXdE8SlJRVQUEB0dYxHwe8Z_1jZQ"
+        "eyJ1c2VybmFtZSI6InRlc3RfdXNlcm5hbWUiLCJleHAiOjE2NDEwMTY4MDB9."
+        "s7ItLux8nLypmUzU-ynrG8us_MvVQ92lhlx2V5TOQGw"
     )
 
 
@@ -67,7 +68,7 @@ def ipstack_response_data():
 
 @pytest.fixture
 def ipstack_response_object(ipstack_response_data):
-    return IpstackStandardLookupResponseModel(**ipstack_response_data)
+    return IpstackGeneralInformationModel(**ipstack_response_data)
 
 
 @pytest.fixture

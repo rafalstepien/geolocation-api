@@ -4,7 +4,7 @@ from sqlalchemy.exc import OperationalError
 from database.database_client import Session
 from database.models import UserInformation
 from geolocation_api.error_handler.exceptions import InvalidDatabaseCredentialsError
-from geolocation_api.security import get_password_hash
+from geolocation_api.security import SecurityHandler
 
 
 def test_database_client_initializes_correctly(create_engine_mock, test_database_client):
@@ -42,7 +42,7 @@ def test_create_user(mocker, test_database_client):
     assert session_add_mock.called_with(
         UserInformation(
             username="test_username",
-            password_hash=get_password_hash("test_password"),
+            password_hash=SecurityHandler.get_password_hash("test_password"),
         )
     )
     assert session_commit_mock.called

@@ -11,25 +11,29 @@ class UserInformation(Base):
     username = Column(String)
     password_hash = Column(String)
 
+    def __repr__(self):
+        return f"<UserInformation({self.username})>"
+
 
 class GeneralInformation(Base):
     __tablename__ = "general_information"
 
     id = Column(Integer, primary_key=True)
     ip_address = Column(String)
-    hostname = Column(String)
     country_code = Column(String)
+    country_name = Column(String)
     region_code = Column(String)
+    region_name = Column(String)
     city = Column(String)
     zip = Column(String)
     latitude = Column(Float)
     longitude = Column(Float)
+    location_information = relationship("LocationInformation", back_populates="general_information", lazy="subquery")
 
     location_information_id = Column(Integer, ForeignKey("location_information.id"))
-    location_information = relationship("LocationInformation", back_populates="general_information")
 
     def __repr__(self):
-        return f"<GeneralInformationData({self.ip_address})>"
+        return f"<GeneralInformation({self.ip_address})>"
 
 
 class LocationInformation(Base):
@@ -41,17 +45,18 @@ class LocationInformation(Base):
     capital = Column(String)
     calling_code = Column(String)
     is_eu = Column(Boolean)
-    country_flag_emoji = Column(String)
 
-    language = relationship("Language", back_populates="location_information")
-    general_information = relationship("GeneralInformation", back_populates="location_information", uselist=False)
+    languages = relationship("Languages", back_populates="location_information", lazy="subquery")
+    general_information = relationship(
+        "GeneralInformation", back_populates="location_information", uselist=False, lazy="subquery"
+    )
 
     def __repr__(self):
         return f"<LocationInformation({self.geoname_id})>"
 
 
-class Language(Base):
-    __tablename__ = "language"
+class Languages(Base):
+    __tablename__ = "languages"
 
     id = Column(Integer, primary_key=True)
     code = Column(String)
@@ -59,4 +64,7 @@ class Language(Base):
     native = Column(String)
 
     location_information_id = Column(Integer, ForeignKey("location_information.id"))
-    location_information = relationship("LocationInformation", back_populates="language")
+    location_information = relationship("LocationInformation", back_populates="languages", lazy="subquery")
+
+    def __repr__(self):
+        return f"<Languages({self.name})>"
