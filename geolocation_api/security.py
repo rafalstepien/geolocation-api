@@ -12,7 +12,7 @@ from geolocation_api.models import JWTData
 
 api_key_scheme = APIKeyHeader(name="Authorization")
 JWT_ALGORITHM = "HS256"
-JWT_EXPIRATION = 60
+JWT_EXPIRATION = 60  # minutes
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 

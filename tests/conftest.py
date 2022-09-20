@@ -2,10 +2,39 @@ import json
 from unittest.mock import Mock
 
 import pytest
+from passlib.context import CryptContext
 
 from database.database_client import DatabaseClient
 from ipstack_client.models import IpstackStandardLookupResponseModel
 from tests.utils import load_test_json_data
+
+
+@pytest.fixture(autouse=True)
+def test_env(monkeypatch):
+    monkeypatch.setattr("config_loader.config_loader.config.JWT_SECRET_KEY", "secret")
+    monkeypatch.setattr("geolocation_api.security.pwd_context", CryptContext(schemes=["bcrypt"], deprecated="auto"))
+
+
+@pytest.fixture
+def test_password_hash():
+    return "$2b$12$842kgmlVOkHthiTiOh5C1.AXk.cVG0B/VT2aKwwk3UCN/mZL3NmAe"
+
+
+@pytest.fixture
+def test_jwt_token_payload():
+    return {
+        "username": "test_username",
+        "exp": 1640998800,
+    }
+
+
+@pytest.fixture
+def test_auth_header():
+    return (
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+        "eyJ1c2VybmFtZSI6InRlc3RfdXNlcm5hbWUiLCJleHAiOjE2NDA5OTg4MDB9."
+        "G8Jqx1fbQ5pKynJSXdE8SlJRVQUEB0dYxHwe8Z_1jZQ"
+    )
 
 
 @pytest.fixture
