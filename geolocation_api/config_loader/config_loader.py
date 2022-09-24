@@ -14,6 +14,9 @@ class ConfigLoader(BaseSettings):
 
     JWT_SECRET_KEY: str = ""
 
+    TEST_USER_USERNAME: str = ""
+    TEST_USER_PASSWORD: str = ""
+
     class Config:
         env_file = os.environ.get("ENV_FILE")
 

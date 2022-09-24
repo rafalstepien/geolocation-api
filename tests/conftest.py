@@ -5,14 +5,16 @@ import pytest
 from passlib.context import CryptContext
 
 from database.database_client import DatabaseClient
-from ipstack_client.models import IpstackStandardLookupResponseModel
+from geolocation_api.ipstack_client.models import IpstackStandardLookupResponseModel
 from tests.utils import load_test_json_data
 
 
 @pytest.fixture(autouse=True)
 def test_env(monkeypatch):
-    monkeypatch.setattr("config_loader.config_loader.config.JWT_SECRET_KEY", "secret")
-    monkeypatch.setattr("geolocation_api.security.pwd_context", CryptContext(schemes=["bcrypt"], deprecated="auto"))
+    monkeypatch.setattr("geolocation_api.config_loader.config_loader.config.JWT_SECRET_KEY", "secret")
+    monkeypatch.setattr(
+        "geolocation_api.security.security.pwd_context", CryptContext(schemes=["bcrypt"], deprecated="auto")
+    )
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 import pytest
 
-from error_handler.exceptions import IpstackAPIValueError, IpstackError
-from ipstack_client.ipstack_client import IpstackClient
+from geolocation_api.error_handler.exceptions import IpstackAPIValueError, IpstackError
+from geolocation_api.ipstack_client.ipstack_client import IpstackClient
 
 
 def test_get_data_for_ip_address_parses_data_correctly(

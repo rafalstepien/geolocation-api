@@ -5,10 +5,10 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
 from database.converters import IpstackToPostgresDataConverter
-from database.models import Users
-from error_handler.error_handler import handle_errors
+from database.models import UserInformation
+from geolocation_api.error_handler.error_handler import handle_errors
+from geolocation_api.ipstack_client.models import IpstackStandardLookupResponseModel
 from geolocation_api.security import get_password_hash
-from ipstack_client.models import IpstackStandardLookupResponseModel
 
 
 class DatabaseClient:
@@ -30,14 +30,14 @@ class DatabaseClient:
         """
         Create new entry in the User table.
         """
-        user = Users(username=username, password_hash=get_password_hash(password))
+        user = UserInformation(username=username, password_hash=get_password_hash(password))
         self._insert_data_to_the_database([user])
 
-    def get_user(self, username: str) -> Users:
+    def get_user(self, username: str) -> UserInformation:
         """
         Query the database for a user with specified username
         """
-        return Session(self.engine).query(Users).filter_by(username=username).first()
+        return Session(self.engine).query(UserInformation).filter_by(username=username).first()
 
     def upload_data(self, data: IpstackStandardLookupResponseModel) -> None:
         """

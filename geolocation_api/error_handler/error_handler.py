@@ -3,8 +3,8 @@ from contextlib import contextmanager
 from pydantic.error_wrappers import ValidationError
 from sqlalchemy.exc import OperationalError
 
-from error_handler.exceptions import InvalidDatabaseCredentialsError, IpstackAPIValueError, IpstackError
-from error_handler.models import IpstackErrorResponseModel
+from geolocation_api.error_handler.exceptions import InvalidDatabaseCredentialsError, IpstackAPIValueError, IpstackError
+from geolocation_api.error_handler.models import IpstackErrorResponseModel
 
 
 class ErrorHandler:

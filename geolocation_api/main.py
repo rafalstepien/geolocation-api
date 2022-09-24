@@ -1,11 +1,16 @@
 from fastapi import Depends, FastAPI, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from config_loader.config_loader import config
 from database.database_client import DatabaseClient
-from geolocation_api.models import JWTData, TokenResponseModel
-from geolocation_api.security import authenticate_user, decode_jwt_authorization_header, encode_jwt_token
-from ipstack_client.ipstack_client import IpstackClient
+from geolocation_api.config_loader.config_loader import config
+from geolocation_api.ipstack_client.ipstack_client import IpstackClient
+from geolocation_api.security import (
+    JWTData,
+    TokenResponseModel,
+    authenticate_user,
+    decode_jwt_authorization_header,
+    encode_jwt_token,
+)
 
 app = FastAPI()
 ipstack_client = IpstackClient()
