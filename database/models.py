@@ -1,17 +1,7 @@
-from sqlalchemy import Column, Float, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
-
-
-class Language(Base):
-    __tablename__ = "language"
-
-    id = Column(Integer, primary_key=True)
-
-    code = Column(String)
-    name = Column(String)
-    native = Column(String)
 
 
 class UserInformation(Base):
@@ -35,7 +25,8 @@ class GeneralInformation(Base):
     latitude = Column(Float)
     longitude = Column(Float)
 
-    location_information = relationship("LocationInformation", uselist=False, backref="location_information")
+    location_information_id = Column(Integer, ForeignKey("location_information.id"))
+    location_information = relationship("LocationInformation", back_populates="general_information")
 
     def __repr__(self):
         return f"<GeneralInformationData({self.ip_address})>"
@@ -49,8 +40,23 @@ class LocationInformation(Base):
     geoname_id = Column(Integer)
     capital = Column(String)
     calling_code = Column(String)
+    is_eu = Column(Boolean)
+    country_flag_emoji = Column(String)
 
-    geolocation_data_id = Column(Integer, ForeignKey(GeneralInformation.id))
+    language = relationship("Language", back_populates="location_information")
+    general_information = relationship("GeneralInformation", back_populates="location_information", uselist=False)
 
     def __repr__(self):
         return f"<LocationInformation({self.geoname_id})>"
+
+
+class Language(Base):
+    __tablename__ = "language"
+
+    id = Column(Integer, primary_key=True)
+    code = Column(String)
+    name = Column(String)
+    native = Column(String)
+
+    location_information_id = Column(Integer, ForeignKey("location_information.id"))
+    location_information = relationship("LocationInformation", back_populates="language")
