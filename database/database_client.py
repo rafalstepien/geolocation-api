@@ -44,7 +44,7 @@ class DatabaseClient:
         Create new entry in geolocation_data and location_data tables.
         """
         converted_data = IpstackToPostgresDataConverter().convert(data)
-        self._insert_data_to_the_database(converted_data)
+        self._insert_data_to_the_database([converted_data])
 
     def delete_data(self, ip_address: str) -> None:
         pass
