@@ -1,3 +1,5 @@
+import ipaddress
+
 import pytest
 from requests import Response
 
@@ -40,3 +42,17 @@ def test_ipstack_client_raises_correct_exception_for_response_not_in_json_format
         IpstackClient().get_data_for_ip_address(ip_address)
 
     assert "Please check the response content" in e.value.message
+
+
+@pytest.mark.parametrize(
+    "address",
+    [
+        "123.3.4.5",
+        "interia.pl",
+        "",
+    ],
+)
+def test_convert_url_to_ip_address(mocker, raw_ipstack_response, address):
+    mocker.patch("requests.get", return_value=raw_ipstack_response)
+    assert ipaddress.ip_address(IpstackClient().convert_url_to_ip_address(address))
+
