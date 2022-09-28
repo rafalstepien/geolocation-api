@@ -28,7 +28,9 @@ class GeneralInformation(Base):
     zip = Column(String)
     latitude = Column(Float)
     longitude = Column(Float)
-    location_information = relationship("LocationInformation", back_populates="general_information", lazy="subquery")
+    location_information = relationship(
+        "LocationInformation", back_populates="general_information", lazy="subquery", cascade="all,delete"
+    )
 
     location_information_id = Column(Integer, ForeignKey("location_information.id"))
 
@@ -46,9 +48,13 @@ class LocationInformation(Base):
     calling_code = Column(String)
     is_eu = Column(Boolean)
 
-    languages = relationship("Languages", back_populates="location_information", lazy="subquery")
+    languages = relationship("Languages", back_populates="location_information", lazy="subquery", cascade="all,delete")
     general_information = relationship(
-        "GeneralInformation", back_populates="location_information", uselist=False, lazy="subquery"
+        "GeneralInformation",
+        back_populates="location_information",
+        uselist=False,
+        lazy="subquery",
+        cascade="all,delete",
     )
 
     def __repr__(self):
@@ -64,7 +70,9 @@ class Languages(Base):
     native = Column(String)
 
     location_information_id = Column(Integer, ForeignKey("location_information.id"))
-    location_information = relationship("LocationInformation", back_populates="languages", lazy="subquery")
+    location_information = relationship(
+        "LocationInformation", back_populates="languages", lazy="subquery", cascade="all,delete"
+    )
 
     def __repr__(self):
         return f"<Languages({self.name})>"

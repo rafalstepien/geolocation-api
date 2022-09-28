@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from database.models import GeneralInformation, UserInformation
 from geolocation_api.converters import IpstackResponseConverter
 from geolocation_api.error_handler import handle_errors
+from geolocation_api.error_handler.exceptions import InvalidDatabaseCredentialsError
 from geolocation_api.ipstack_client.models import IpstackGeneralInformationModel
 from geolocation_api.security import SecurityHandler
 
@@ -23,6 +24,8 @@ class DatabaseClient:
         self.database = database
         self.port = str(port)
 
+        self._validate_credentials()
+
         self.connection_string = f"postgresql://{self.user}:{password}@{host}/{database}"
         self.engine = create_engine(self.connection_string)
 
@@ -37,7 +40,8 @@ class DatabaseClient:
         """
         Query the database for a user with specified username
         """
-        return Session(self.engine).query(UserInformation).filter_by(username=username).first()
+        with Session(self.engine) as session:
+            return session.query(UserInformation).filter_by(username=username).first()
 
     def upload_data(self, data: IpstackGeneralInformationModel) -> None:
         """
@@ -53,16 +57,20 @@ class DatabaseClient:
         Args:
             ip_address: IP address that will be used to filter the records.
         """
-        pass
+        with handle_errors(OperationalError):
+            with Session(self.engine) as session:
+                data = session.query(GeneralInformation).filter_by(ip_address=ip_address).first()
+                session.delete(data)
+                session.commit()
 
     def get_data(self, ip_address: str) -> Tuple:
         """
         Return records that match given IP address.
         Args:
             ip_address: IP address that will be used to filter the records.
-            username:
         """
-        return Session(self.engine).query(GeneralInformation).filter_by(ip_address=ip_address).first()
+        with Session(self.engine) as session:
+            return session.query(GeneralInformation).filter_by(ip_address=ip_address).first()
 
     def _insert_data_to_the_database(self, elements_to_add_to_session: Iterable) -> None:
         """
@@ -73,3 +81,9 @@ class DatabaseClient:
                 for element in elements_to_add_to_session:
                     session.add(element)
                 session.commit()
+
+    def _validate_credentials(self):
+        if not all([self.user, self.password, self.host, self.database]):
+            raise InvalidDatabaseCredentialsError(
+                message="Some of the credentials are empty. Please check if provided config file is correct and exists."
+            )

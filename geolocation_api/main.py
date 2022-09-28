@@ -33,8 +33,9 @@ def add_data(ip_address: str, jwt_data: JWTData = Depends(SecurityHandler.decode
 
 
 @app.delete("/data")
-def delete_data(ip_address: str):
-    return {"endpoint": "delete_data"}
+def delete_data(ip_address: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
+    database_client.delete_data(ip_address)
+    return Response(status_code=status.HTTP_200_OK)
 
 
 @app.post("/token")
