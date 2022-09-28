@@ -46,6 +46,11 @@ def ip_address():
 
 
 @pytest.fixture
+def test_username():
+    return "testuser"
+
+
+@pytest.fixture
 def create_engine_mock(mocker):
     return mocker.patch("database.database_client.create_engine")
 
