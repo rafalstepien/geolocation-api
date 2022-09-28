@@ -3,28 +3,27 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class Model(BaseModel):
+class IpstackBaseModel(BaseModel):
     class Config:
         allow_population_by_field_name = True
 
 
-class Language(Model):
+class IpstackLanguageModel(IpstackBaseModel):
     code: str
     name: str
     native: str
 
 
-class Location(Model):
+class IpstackLocationInformationModel(IpstackBaseModel):
     geoname_id: Optional[int] = -1
     capital: str
-    languages: List[Language]
+    languages: List[IpstackLanguageModel]
     calling_code: str
     is_eu: bool
 
 
-class IpstackStandardLookupResponseModel(Model):
+class IpstackGeneralInformationModel(IpstackBaseModel):
     ip: str
-    type: Optional[str] = ""
     country_code: Optional[str] = ""
     country_name: Optional[str] = ""
     region_code: Optional[str] = ""
@@ -33,4 +32,5 @@ class IpstackStandardLookupResponseModel(Model):
     zip: Optional[str] = ""
     latitude: float
     longitude: float
-    location: Location
+    location: IpstackLocationInformationModel
+    is_eu: Optional[bool]
