@@ -7,7 +7,6 @@ from passlib.context import CryptContext
 
 from database.models import UserInformation
 from geolocation_api.config_loader import config
-from geolocation_api.error_handler.exceptions import IncorrectPasswordError, UserNotFoundError
 from geolocation_api.security import JWTData
 
 
@@ -77,7 +76,7 @@ class SecurityHandler:
             User object.
         """
         if not user:
-            raise UserNotFoundError()
+            raise HTTPException(detail="Username is incorrect.", status_code=status.HTTP_401_UNAUTHORIZED)
         if not SecurityHandler.verify_password(password, user.password_hash):
-            raise IncorrectPasswordError()
+            raise HTTPException(detail="Password is incorrect.", status_code=status.HTTP_401_UNAUTHORIZED)
         return user

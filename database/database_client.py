@@ -60,8 +60,9 @@ class DatabaseClient:
         with handle_errors(OperationalError):
             with Session(self.engine) as session:
                 data = session.query(GeneralInformation).filter_by(ip_address=ip_address).first()
-                session.delete(data)
-                session.commit()
+                if data:
+                    session.delete(data)
+                    session.commit()
 
     def get_data(self, ip_address: str) -> GeneralInformation:
         """

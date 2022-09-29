@@ -3,7 +3,6 @@ from unittest.mock import Mock
 import pytest
 from fastapi.exceptions import HTTPException
 
-from geolocation_api.error_handler.exceptions import IncorrectPasswordError, UserNotFoundError
 from geolocation_api.security import JWTData, SecurityHandler
 
 
@@ -47,9 +46,9 @@ def test_user_is_authenticated_correctly(test_password_hash):
     assert SecurityHandler.authenticate_user(user, "123")
 
 
-@pytest.mark.parametrize("user_object, exception", [(None, UserNotFoundError), (Mock(), IncorrectPasswordError)])
-def test_authenticate_user_raises_correct_exception(user_object, exception, request):
+@pytest.mark.parametrize("user_object", [None, Mock()])
+def test_authenticate_user_raises_correct_exception(user_object, request):
     if user_object:
         user_object.password_hash = request.getfixturevalue("test_password_hash")
-    with pytest.raises(exception):
+    with pytest.raises(HTTPException):
         SecurityHandler.authenticate_user(user_object, "wrong-password")
