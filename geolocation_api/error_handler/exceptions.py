@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import status
 
 
@@ -14,6 +16,31 @@ class BaseGeolocationAPIError(Exception):
             self.message = message
         if status_code:
             self.status_code = status_code
+
+    def __str__(self):
+        return str(
+            {
+                "status_code": self.status_code,
+                "message": self.message,
+            }
+        )
+
+
+class MultipleExceptionsError(Exception):
+    """
+    Base for all errors that raise multiple errors at the same time.
+    """
+
+    status_code: int = status.HTTP_400_BAD_REQUEST
+    errors: List[BaseGeolocationAPIError] = None
+
+    def __init__(self, errors=None, status_code=None):
+        if errors:
+            self.errors = errors
+        if status_code:
+            self.status_code = status_code
+
+        self.message = [str(error) for error in self.errors]
 
     def __str__(self):
         return str(
@@ -49,11 +76,6 @@ class IpstackError(BaseGeolocationAPIError):
     ...
 
 
-class UserNotFoundError(BaseGeolocationAPIError):
-    status_code = status.HTTP_401_UNAUTHORIZED
-    message = "Username is incorrect."
-
-
-class IncorrectPasswordError(BaseGeolocationAPIError):
-    status_code = status.HTTP_401_UNAUTHORIZED
-    message = "Provided password is incorrect."
+class UnknownError(BaseGeolocationAPIError):
+    status_code = status.HTTP_400_BAD_REQUEST
+    message = "Unknown error occurred"

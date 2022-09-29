@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
 import pytest
+from fastapi.exceptions import HTTPException
 from sqlalchemy.exc import OperationalError
 
 from database.database_client import DatabaseClient, Session
@@ -41,7 +42,7 @@ def test_client_handles_database_connection_error_correctly(
     mocker.patch.object(Session, "add")
     mocker.patch.object(Session, "commit", side_effect=OperationalError("", "", ""))
 
-    with pytest.raises(InvalidDatabaseCredentialsError) as error:
+    with pytest.raises(HTTPException) as error:
         test_database_client.upload_data(ipstack_response_object)
 
     assert error.value.status_code == 401
