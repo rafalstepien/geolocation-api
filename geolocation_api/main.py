@@ -20,20 +20,22 @@ postgres_to_geolocation_converter = DatabaseResponseConverter()
 
 
 @app.get("/data")
-def get_data(ip_address: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
+def get_data(ip_address_or_url: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
+    ip_address = ipstack_client.convert_url_to_ip_address(ip_address_or_url)
     data = database_client.get_data(ip_address)
     return postgres_to_geolocation_converter.convert(data) or Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @app.post("/data")
-def add_data(ip_address: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
-    data = ipstack_client.get_data_for_ip_address(ip_address)
+def add_data(ip_address_or_url: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
+    data = ipstack_client.get_data_for_ip_address(ip_address_or_url)
     database_client.upload_data(data)
     return Response(status_code=status.HTTP_201_CREATED)
 
 
 @app.delete("/data")
-def delete_data(ip_address: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
+def delete_data(ip_address_or_url: str, jwt_data: JWTData = Depends(SecurityHandler.decode_jwt_authorization_header)):
+    ip_address = ipstack_client.convert_url_to_ip_address(ip_address_or_url)
     database_client.delete_data(ip_address)
     return Response(status_code=status.HTTP_200_OK)
 

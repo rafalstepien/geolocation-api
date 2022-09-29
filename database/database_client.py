@@ -1,4 +1,4 @@
-from typing import Iterable, Tuple
+from typing import Iterable
 
 from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
@@ -63,7 +63,7 @@ class DatabaseClient:
                 session.delete(data)
                 session.commit()
 
-    def get_data(self, ip_address: str) -> Tuple:
+    def get_data(self, ip_address: str) -> GeneralInformation:
         """
         Return records that match given IP address.
         Args:
