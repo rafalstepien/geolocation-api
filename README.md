@@ -37,4 +37,6 @@ Because of the security issues this file does not come with Git repository by de
 repository one can find the template environment file that must be filled with correct credentials).
 The environment file with credentials will be sent via email.
 
+In case of creating custom environmen file, please note that the file must be named `local.env` and placed in `env/` directory of the application.
+
 After that, the only command needed to run the application is `docker-compose up`.
