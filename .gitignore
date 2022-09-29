@@ -107,8 +107,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-local.env
-local_student.env
+local*.env
 
 # Spyder project settings
 .spyderproject
