@@ -1,6 +1,5 @@
 # geolocation-api
-This is the application created as an interview assignment for Sofomo. Below one will find some information
-to get the high-level overview about the app:
+Below one will find some information to get the high-level overview about the app:
 
 - The app is available under [this url](https://sofomo-geolocation-api.herokuapp.com/)
 - It consists of database client, and the actual API
