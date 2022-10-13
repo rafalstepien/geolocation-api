@@ -1,4 +1,7 @@
 # geolocation-api
+
+This is a basic FastAPI application that communicates with third-party API (Ipstack.com). This application has a few endpoints that allow user to obtain the data from Ipstack API and save it to PostgreSQL database.
+
 Below one will find some information to get the high-level overview about the app:
 
 - The app is available under [this url](https://sofomo-geolocation-api.herokuapp.com/)
